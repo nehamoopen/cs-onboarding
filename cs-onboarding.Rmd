@@ -1,10 +1,12 @@
 ---
-title: "Team Code & Software: Onboarding"
+title: "Now Boarding: Team Code & Software"
 date: "`r Sys.Date()`"
+author: "Neha Moopen"
+github: "nehamoopen/cs-onboarding"
 #logo: "logo_gallery.png"
 output:
   epuRate::epurate:
-    toc: TRUE
+    toc: FALSE
     number_sections: FALSE
     code_folding: "hide"
 knit: (function(input, ...) {
@@ -15,199 +17,183 @@ knit: (function(input, ...) {
   })
 ---
 
+<br>
 
-<br><br>
+> Team Code & Software is a 'sub-team' within RDM Support, officially formed in academic year 2022-2023. This document introduces the team and outlines its goals and activities.  
 
-> Let's start with a short introduction. Explain briefly what this document is going to talk about. May be add a [useful link](https://github.com/holtzy/epuRate) relative to this project.
+## Introduction 
 
+Team Code & Software focuses on support that equips UU researchers to work in line with open science and the FAIR principles for data and software. 
 
-# Get the data
-***
-Always start by loading *libraries*. The [tidyverse](https://www.tidyverse.org) is probably the package I use the most. Quite difficult to imagine analysing data without it. It is a good practice to load all the packages in the same time. It allows to know exactly what is needed to reproduce your analysis.
-```{r, message=FALSE, warning=FALSE}
-library(tidyverse)
-library(rmarkdown)    # You need this library to run this template.
-library(epuRate)      # Install with devtools: install_github("holtzy/epuRate", force=TRUE)
-```
+The team, along with RDM Support, is contributing to the following [strategic goals of the UB](https://www.uu.nl/sites/default/files/UB-Policy-Plan-2022-2025-PDF-4MB.pdf):
 
-Then I explain what is my input data and I load it. Here is how it looks like:
-```{r}
-# Show it:
-mtcars %>% head(5)
-```
+- The Utercht University community is information-literate with regards to publications, data, code and software.
+- Utrecht University's scholarly output is open or FAIR.
+- Utrecht University's educational resources are FAIR.
 
-This file has `r nrow(mtcars)` lines and `r ncol(mtcars)` columns. It is ready to be analysed.
+Our activities largely involve consultancy and training, as well as community building. 
 
+The team can also provide hands-on/structural support depending on team members' expertise and availability. Typically, team members based at the UB would provide support for research data management, while larger scientific computing projects would be taken up by the Research Engineering team based at ITS.   
 
+We don’t (necessarily) provide support on statistics and analyses that would typically be covered in faculties and study programs. 
 
+The contactpersons for the team are:
 
+- [Neha Moopen](n.moopen@uu.nl) @UB. 
+- [Jelle Treep](https://www.uu.nl/medewerkers/HJTreep) @ResearchEngineering
 
-# A few analysis
-***
-Here are 3 version of a [circular barplot](https://www.r-graph-gallery.com/circular-barplot/) that you can find in the [R graph gallery](https://www.r-graph-gallery.com/circular-barplot/). Note that the figure is centered. You can change the size of the plot with **fig.width** and **fig.height**  
+## Workshops & Lectures
 
-## basic
-Let's start with a basic version of a circular representation of the data
-```{r, warning=FALSE, fig.align='center' }
-# Create dataset
-data=data.frame(
-  individual=paste( "Mister ", seq(1,60), sep=""),
-  value=sample( seq(10,100), 60, replace=T)
-)
+We currently provide the following workshops & lectures:
 
-# Set a number of 'empty bar'
-empty_bar=10
+1. Introduction to R & Data: [course website](https://utrechtuniversity.github.io/workshop-introduction-to-R-and-data/) / [GitHub repository](https://github.com/UtrechtUniversity/workshop-introduction-to-r-and-data)
+2. Best Practices in writing Reproducible Code: [course website](https://utrechtuniversity.github.io/workshop-computational-reproducibility/docs/index.html) / [GitHub repository](https://github.com/UtrechtUniversity/workshop-computational-reproducibility)
+3. Writing a Reproducible Manuscript in R with WORCS: [course website](https://nehamoopen.github.io/worcshop-book/) / [GitHub repository](https://github.com/nehamoopen/worcshop-book)
+4. Getting Started With Computational Reproducibility: [slides](https://github.com/UtrechtUniversity/computational-reproducibility) / [GitHub repository](https://github.com/UtrechtUniversity/computational-reproducibility)
 
-# Add lines to the initial dataset
-to_add = matrix(NA, empty_bar, ncol(data))
-colnames(to_add) = colnames(data)
-data=rbind(data, to_add)
-data$id=seq(1, nrow(data))
+The following workshops are under development or just ideas:
 
-# Get the name and the y position of each label
-label_data=data
-number_of_bar=nrow(label_data)
-angle= 90 - 360 * (label_data$id-0.5) /number_of_bar     # I substract 0.5 because the letter must have the angle of the center of the bars. Not extreme right(1) or extreme left (0)
-label_data$hjust<-ifelse( angle < -90, 1, 0)
-label_data$angle<-ifelse(angle < -90, angle+180, angle)
+- REBO Skills Academy: Text-Mining in R (in development): [GitHub repository](https://github.com/UtrechtUniversity/workshop-rebo-skills-academy-2023)
+- Introduction to Python & Data (in development)
+- Git & GitHub
+- Literaure Searches & Systematic Reviews in R: [GitHub issue](https://github.com/nehamoopen/digital-garden/issues/42)
+- Data Visualization
+- Linked Open Data: [GitHub repository](https://github.com/nehamoopen/lessons-in-lod)
+- Shell Commands/Scripting
 
-# Make the plot
-p = ggplot(data, aes(x=as.factor(id), y=value)) +       # Note that id is a factor. If x is numeric, there is some space between the first bar
-  geom_bar(stat="identity", fill="#69b3a2") +
-  ylim(-100,120) +
-  theme_minimal() +
-  theme(
-    axis.text = element_blank(),
-    axis.title = element_blank(),
-    panel.grid = element_blank(),
-    plot.margin = unit(rep(-1,4), "cm")
-  ) +
-  coord_polar(start = 0) +
-  geom_text(data=label_data, aes(x=id, y=value+10, label=individual, hjust=hjust), color="black", fontface="bold",alpha=0.6, size=2.5, angle= label_data$angle, inherit.aes = FALSE )
+<style>
+div.blue { background-color:#e6f0ff; border-radius: 5px; padding: 20px;}
+</style>
+<div class = "blue">
 
-p
-```
+TO-DOs:
 
+- Develop course materials for REBO Text-Mining workshop.
+- Review content of ongoing workshops.
+- Convert Introduction to R & Data website to [bookdown](https://pkgs.rstudio.com/bookdown/).
+- Update bookdown theme for all workshops to match UU style.
+- Create reproducible presentation for the reproducibility lecture.
+- Review workshop webpages.
+- Review FormDesk registration forms.
+- Pre-workshop email templates.
+- Post-workshop email templates.
+- Automate workshop certificates.
+- Archive workshop materials on Zenodo and obtain a DOI.
 
-## grouped
-```{r, warning=FALSE, fig.align='center' }
-# Create dataset
-data=data.frame(
-  individual=paste( "Mister ", seq(1,60), sep=""),
-  group=c( rep('A', 10), rep('B', 30), rep('C', 14), rep('D', 6)) ,
-  value=sample( seq(10,100), 60, replace=T)
-)
+</div>
 
-# Set a number of 'empty bar' to add at the end of each group
-empty_bar=4
-to_add = data.frame( matrix(NA, empty_bar*nlevels(data$group), ncol(data)) )
-colnames(to_add) = colnames(data)
-to_add$group=rep(levels(data$group), each=empty_bar)
-data=rbind(data, to_add)
-data=data %>% arrange(group)
-data$id=seq(1, nrow(data))
+## Programming Cafe
 
-# Get the name and the y position of each label
-label_data=data
-number_of_bar=nrow(label_data)
-angle= 90 - 360 * (label_data$id-0.5) /number_of_bar     # I substract 0.5 because the letter must have the angle of the center of the bars. Not extreme right(1) or extreme left (0)
-label_data$hjust<-ifelse( angle < -90, 1, 0)
-label_data$angle<-ifelse(angle < -90, angle+180, angle)
+The [Programming Cafe](https://www.uu.nl/en/research/research-data-management/walk-in-hours-workshops/programming-cafe) is an informal community event that takes place on a monthly basis. During this event, we knowledge about programming through short presentations and also help each other with challenges in working with code and data. 
+It is a ‘relaunch’ of the popular [R Café](https://github.com/UtrechtUniversity/R-data-cafe) that used to take place before the coronavirus outbreak. We broadened the event to include programming languages other than R.
 
-# Make the plot
-p = ggplot(data, aes(x=as.factor(id), y=value, fill=group)) +       # Note that id is a factor. If x is numeric, there is some space between the first bar
-  geom_bar(stat="identity", alpha=0.5) +
-  ylim(-100,120) +
-  theme_minimal() +
-  theme(
-    legend.position = "none",
-    axis.text = element_blank(),
-    axis.title = element_blank(),
-    panel.grid = element_blank(),
-    plot.margin = unit(rep(-1,4), "cm")
-  ) +
-  coord_polar() +
-  geom_text(data=label_data, aes(x=id, y=value+10, label=individual, hjust=hjust), color="black", fontface="bold",alpha=0.6, size=2.5, angle= label_data$angle, inherit.aes = FALSE )
+Link to GitHub repository: https://github.com/UtrechtUniversity/programming-cafe
 
-p
-```
+<style>
+div.blue { background-color:#e6f0ff; border-radius: 5px; padding: 20px;}
+</style>
+<div class = "blue">
 
-## complex
-```{r, warning=FALSE, fig.align='center' }
-# Create dataset
-data=data.frame(
-  individual=paste( "Mister ", seq(1,60), sep=""),
-  group=c( rep('A', 10), rep('B', 30), rep('C', 14), rep('D', 6)) ,
-  value=sample( seq(10,100), 60, replace=T)
-)
+TO-DOs:
 
-# Set a number of 'empty bar' to add at the end of each group
-empty_bar=3
-to_add = data.frame( matrix(NA, empty_bar*nlevels(data$group), ncol(data)) )
-colnames(to_add) = colnames(data)
-to_add$group=rep(levels(data$group), each=empty_bar)
-data=rbind(data, to_add)
-data=data %>% arrange(group)
-data$id=seq(1, nrow(data))
+- Update Programming Cafe GitHub repository
+- Attend and/or co-organize the Programming Cafe.
 
-# Get the name and the y position of each label
-label_data=data
-number_of_bar=nrow(label_data)
-angle= 90 - 360 * (label_data$id-0.5) /number_of_bar     # I substract 0.5 because the letter must have the angle of the center of the bars. Not extreme right(1) or extreme left (0)
-label_data$hjust<-ifelse( angle < -90, 1, 0)
-label_data$angle<-ifelse(angle < -90, angle+180, angle)
+</div>
 
-# prepare a data frame for base lines
-base_data=data %>%
-  group_by(group) %>%
-  summarize(start=min(id), end=max(id) - empty_bar) %>%
-  rowwise() %>%
-  mutate(title=mean(c(start, end)))
+## Consultancy
 
-# prepare a data frame for grid (scales)
-grid_data = base_data
-grid_data$end = grid_data$end[ c( nrow(grid_data), 1:nrow(grid_data)-1)] + 1
-grid_data$start = grid_data$start - 1
-grid_data=grid_data[-1,]
+During the [Walk-In Hours for Research Data & Software](https://www.uu.nl/en/research/research-data-management/walk-in-hours-workshops/walk-in-hours-research-data-software) which take plce on a weekly basis, we provide consultancy such as advice and one-on-one support. 
 
-# Make the plot
-p = ggplot(data, aes(x=as.factor(id), y=value, fill=group)) +       # Note that id is a factor. If x is numeric, there is some space between the first bar
+We also provide consultancy via email/TopDesk. Questions may be resolved via email/TopDesk or they could lead to follow-up appointments.
 
-  geom_bar(aes(x=as.factor(id), y=value, fill=group), stat="identity", alpha=0.5) +
+<style>
+div.blue { background-color:#e6f0ff; border-radius: 5px; padding: 20px;}
+</style>
+<div class = "blue">
 
-  # Add a val=100/75/50/25 lines. I do it at the beginning to make sur barplots are OVER it.
-  geom_segment(data=grid_data, aes(x = end, y = 80, xend = start, yend = 80), colour = "grey", alpha=1, size=0.3 , inherit.aes = FALSE ) +
-  geom_segment(data=grid_data, aes(x = end, y = 60, xend = start, yend = 60), colour = "grey", alpha=1, size=0.3 , inherit.aes = FALSE ) +
-  geom_segment(data=grid_data, aes(x = end, y = 40, xend = start, yend = 40), colour = "grey", alpha=1, size=0.3 , inherit.aes = FALSE ) +
-  geom_segment(data=grid_data, aes(x = end, y = 20, xend = start, yend = 20), colour = "grey", alpha=1, size=0.3 , inherit.aes = FALSE ) +
+TO-DOs:
 
-  # Add text showing the value of each 100/75/50/25 lines
-  annotate("text", x = rep(max(data$id),4), y = c(20, 40, 60, 80), label = c("20", "40", "60", "80") , color="grey", size=3 , angle=0, fontface="bold", hjust=1) +
+- Attend the Walk-In Hours & keep an eye on TopDesk.
 
-  geom_bar(aes(x=as.factor(id), y=value, fill=group), stat="identity", alpha=0.5) +
-  ylim(-100,120) +
-  theme_minimal() +
-  theme(
-    legend.position = "none",
-    axis.text = element_blank(),
-    axis.title = element_blank(),
-    panel.grid = element_blank(),
-    plot.margin = unit(rep(-1,4), "cm")
-  ) +
-  coord_polar() +
-  geom_text(data=label_data, aes(x=id, y=value+10, label=individual, hjust=hjust), color="black", fontface="bold",alpha=0.6, size=2.5, angle= label_data$angle, inherit.aes = FALSE ) +
+</div>
 
-  # Add base line information
-  geom_segment(data=base_data, aes(x = start, y = -5, xend = end, yend = -5), colour = "black", alpha=0.8, size=0.6 , inherit.aes = FALSE )  +
-  geom_text(data=base_data, aes(x = title, y = -18, label=group), hjust=c(1,1,0,0), colour = "black", alpha=0.8, size=4, fontface="bold", inherit.aes = FALSE)
+## Website & Communications
 
-p
-```
+The RDM Support website only recently got a tab for guides related to [Software & Computing](https://www.uu.nl/en/research/research-data-management/tools-services/software-and-computing). The team can create more guides for coding and software to accompany those already available for research data.
 
+<style>
+div.blue { background-color:#e6f0ff; border-radius: 5px; padding: 20px;}
+</style>
+<div class = "blue">
 
+TO-DOs:
 
-# Conclusion
-***
-Read more about this template [here](https://github.com/holtzy/epuRate).
+- Decide (as a team) what guides are relevant for researchers.
+- Prioritize and develop the guides.
 
-Learn how to custom your R Markdown document [here](https://holtzy.github.io/Pimp-my-rmd/).
+</div>
+
+## RDM Utilities
+
+Neha recently created a GitHub repository for [RDM Utilities](https://github.com/UtrechtUniversity/rdm-utilities). The idea is to create code snippets/tutorials/cheatsheets that facilitate research data management, including FAIRification. It is aimed at colleagues in data and software support, but it can be used by tech-savvy researchers as well.
+
+This repository can also be linked to the guides we want to put on the RDM Support website.
+
+<style>
+div.blue { background-color:#e6f0ff; border-radius: 5px; padding: 20px;}
+</style>
+<div class = "blue">
+
+TO-DOs:
+
+- Work through and update the proposed utilities in the repository.
+- Write up on new utilities if they're relvant.
+
+</div>
+
+## Course Catalog
+
+The trainings provided by Team Code & Software emphasize basic and foundational skills, but it would be useful to have a catalog of trainings on code & software provided across the UU. This would give us an overview of what is and isn't taught at the UU currently and help us point researchers to courses and workshops relevant for them or consider developing a training ourselves.
+
+<style>
+div.blue { background-color:#e6f0ff; border-radius: 5px; padding: 20px;}
+</style>
+<div class = "blue">
+
+TO-DOs:
+
+- Coordinate with faculty liaisons and information specialists to find out what courses are being delivered at the faculties.
+- Discuss with Team Learning on the best way to catalog the workshop information.
+
+</div>
+
+## Community Building
+
+In order to better situate the team within the UU, we need to meet with and develop our relationship with others who are working with or promoting coding & software skills. These parties include, but are not limited to:
+
+- Center for Digital Humanities
+- The various Graduate Schools
+- ITS
+- FAIR Data & Software Fellows
+- OSCU Ambassadors
+
+<style>
+div.blue { background-color:#e6f0ff; border-radius: 5px; padding: 20px;}
+</style>
+<div class = "blue">
+
+TO-DOs:
+
+kinda self-explanatory, we need to plan meetings...
+
+</div>
+
+## Prequisites (sort of) to Getting Started
+
+It would be to have working knowledge of:
+
+- R and/or Python.
+- Git & GitHub for collaboration.
+- [bookdown](https://pkgs.rstudio.com/bookdown/) and/or [JupyterBook](https://jupyterbook.org/en/stable/intro.html) to build course websites.
+
